@@ -82,6 +82,33 @@ public class PlayerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseJson);
     }
 
+    //Eliminar Usuario
+
+    @DeleteMapping("")
+    public ResponseEntity<HashMap<String, Object>> borrar(@RequestParam("id") String idStr){
+
+        try{
+            int id = Integer.parseInt(idStr);
+
+            HashMap<String, Object> respuesta = new HashMap<>();
+
+            Optional<Player> byId = playerRepository.findById(id);
+            if(byId.isPresent()){
+                playerRepository.deleteById(id);
+                respuesta.put("result","ok");
+            }else{
+                respuesta.put("result","no ok");
+                respuesta.put("msg","el ID enviado no existe");
+            }
+
+            return ResponseEntity.ok(respuesta);
+        }catch (NumberFormatException e){
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+
+
 
 
 
